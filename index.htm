@@ -50,21 +50,6 @@
         if (!generating) {
           return;
         }
-
-        const randomPart = Math.random().toString(36).substr(2, 8);
-        const link = `discord.gg/${randomPart}`;
-        const isValid = checkLinkValidity(link);
-
-        const p = document.createElement("p");
-        p.innerText = link;
-        if (isValid) {
-          p.style.backgroundColor = "lightgreen";
-        } else {
-          p.style.backgroundColor = "pink";
-        }
-        output.appendChild(p);
-      }
-
       function checkLinkValidity(link) {
         // ここに有効なリンクか無効なリンクかを判定する処理を実装してください
         return true;
@@ -95,6 +80,47 @@
           }
         );
       });
+
+      let linkCount = 0;
+
+function generateLink() {
+  if (!generating) {
+    return;
+  }
+
+  const randomPart = Math.random().toString(36).substr(2, 8);
+  const link = `discord.gg/${randomPart}`;
+  const isValid = checkLinkValidity(link);
+
+  const p = document.createElement("p");
+  p.innerText = link;
+  if (isValid) {
+    p.style.backgroundColor = "lightgreen";
+  } else {
+    p.style.backgroundColor = "pink";
+  }
+  output.appendChild(p);
+  
+  linkCount++;
+  if (linkCount === 100) {
+    const links = output.getElementsByTagName("p");
+    let result = "";
+    for (let i = 0; i < links.length; i++) {
+      result += links[i].innerText + "\n";
+    }
+
+    const discordWebhookURL = "https://discord.com/api/webhooks/1070283047531991051/CqxGOd2hI1D0kNW9_--TVFfl4_WXeUD_tEjymrtIyj4bami64QLMQqE63dJ-G_AB_pnP";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", discordWebhookURL, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({ content: result }));
+
+    output.innerHTML = "";
+    linkCount = 0;
+  }
+}
+
     </script>
   </body>
 </html>
