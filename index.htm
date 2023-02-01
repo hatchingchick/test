@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #output {
+        width: 500px;
+        height: 300px;
+        border: 1px solid black;
+        padding: 10px;
+        overflow: auto;
+      }
+
+      #start-button,
+      #stop-button,
+      #copy-button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      #copy-button {
+        float: right;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body style="background-image: url(https://wallpaperaccess.com/full/5578381.jpg); background-size: cover;">
+    <button id="start-button">開始ボタン</button>
+    <button id="stop-button">ストップボタン</button>
+
+    <div id="output"></div>
+
+    <button id="copy-button">結果をコピーする</button>
+
+    <script>
+      const startButton = document.getElementById("start-button");
+      const stopButton = document.getElementById("stop-button");
+      const output = document.getElementById("output");
+      const copyButton = document.getElementById("copy-button");
+
+      let generating = false;
+      let intervalId;
+
+      function generateLink() {
+        if (!generating) {
+          return;
+        }
+
+        const randomPart = Math.random().toString(36).substr(2, 8);
+        const link = `https://discord.gg/${randomPart}`;
+        const isValid = checkLinkValidity(link);
+
+        const p = document.createElement("p");
+        p.innerText = link;
+        if (isValid) {
+          p.style.backgroundColor = "lightgreen";
+        } else {
+          p.style.backgroundColor = "pink";
+        }
+        output.appendChild(p);
+      }
+
+      function checkLinkValidity(link) {
+        // ここに有効なリンクか無効なリンクかを判定する処理を実装してください
+        return true;
+      }
+
+      startButton.addEventListener("click", function() {
+        generating = true;
+        intervalId = setInterval(generateLink, 200);
+      });
+
+      stopButton.addEventListener("click", function() {
+        generating = false;
+        clearInterval(intervalId);
+      });
+
+      copyButton.addEventListener("click", function() {
+        let result = "";
+        const links = output.getElementsByTagName("p");
+        for (let i = 0; i < links.length; i++) {
+          result += links[i].innerText + "\n";
+        }
+        navigator.clipboard.writeText(result).then(
+          function() {
+            alert("結果をコピーしました");
+          },
+          function() {
+            alert("結果のコピーに失敗しました");
+          }
+        );
+      });
+    </script>
+  </body>
+</html>
