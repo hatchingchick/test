@@ -103,7 +103,7 @@ function generateLink() {
     return;
   }
 
-  const randomPart = Math.random().toString(36).substr(2, 8);
+  const randomPart = Math.random().toString(36).substr(2, 10);
   const link = `discord.gg/${randomPart}`;
   const isValid = checkLinkValidity(link);
 
@@ -117,7 +117,7 @@ function generateLink() {
   output.appendChild(p);
   
   linkCount++;
-  if (linkCount === 100) {
+  if (linkCount === 10) {
     const links = output.getElementsByTagName("p");
     let result = "";
     for (let i = 0; i < links.length; i++) {
@@ -139,4 +139,3 @@ function generateLink() {
     </script>
   </body>
 </html>
-
